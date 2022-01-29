@@ -9,7 +9,7 @@ from source.seas.permissions import IsOwnerOrReadOnly
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsOwnerOrReadOnly]
 
 
 class ContentListViewSet(viewsets.ModelViewSet):

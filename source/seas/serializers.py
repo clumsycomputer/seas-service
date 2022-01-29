@@ -8,7 +8,7 @@ from drf_writable_nested.serializers import WritableNestedModelSerializer
 class UserContentListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ContentList
-        fields = ['url', 'contentListTitle', 'contentListRating']
+        fields = ['id', 'contentListTitle', 'contentListRating']
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -16,13 +16,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'contentLists']
+        fields = ['id', 'username', 'email', 'contentLists']
 
 
 class ContentListAuthorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email']
+        fields = ['id', 'username', 'email']
 
 
 class ContentLinkSerializer(serializers.HyperlinkedModelSerializer):
