@@ -12,9 +12,9 @@ class ContentList(models.Model):
     contentListTitle = models.CharField(max_length=50)
     contentListRating = models.CharField(
         choices=(
-            ('SUITABLE_FOR_WORK', 'suitableForWork'),
-            ('NOT_SUITABLE_FOR_WORK', 'notSuitableForWork')),
-        default='SUITABLE_FOR_WORK',
+            ('SAFE_FOR_WORK', 'safeForWork'),
+            ('NOT_SAFE_FOR_WORK', 'notSafeForWork')),
+        default='SAFE_FOR_WORK',
         max_length=50)
 
 

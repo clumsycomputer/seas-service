@@ -15,4 +15,4 @@ class UserViewSet(viewsets.ModelViewSet):
 class ContentListViewSet(viewsets.ModelViewSet):
     queryset = ContentList.objects.all()
     serializer_class = ContentListSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnly]

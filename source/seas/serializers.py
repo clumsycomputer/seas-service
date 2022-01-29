@@ -45,5 +45,5 @@ class ContentListSerializer(WritableNestedModelSerializer):
 
     class Meta:
         model = ContentList
-        fields = ['url', 'contentListAuthor', 'contentListTitle',
+        fields = ['id', 'contentListAuthor', 'contentListTitle',
                   'contentListRating', 'contentListItems']

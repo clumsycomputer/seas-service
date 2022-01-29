@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.urls import re_path as url
 from rest_framework import routers
 from source.seas import views
 
@@ -24,6 +25,7 @@ router.register(r'content-list', views.ContentListViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    # https://github.com/Tivix/django-rest-auth/issues/650#issuecomment-1004764059
+    url(r'^rest-auth/', include('rest_auth.urls')),
     path('admin/', admin.site.urls),
 ]
