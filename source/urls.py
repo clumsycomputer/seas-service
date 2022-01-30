@@ -20,12 +20,13 @@ from rest_framework import routers
 from source.seas import views
 
 router = routers.DefaultRouter()
-router.register(r'user', views.UserViewSet)
-router.register(r'content-list', views.ContentListViewSet)
+router.register(r'users', views.UserProfileViewSet)
+router.register(r'content-lists', views.ContentListViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
     # https://github.com/Tivix/django-rest-auth/issues/650#issuecomment-1004764059
     url(r'^rest-auth/', include('rest_auth.urls')),
+    url(r'^current-user', views.CurrentUserView.as_view()),
     path('admin/', admin.site.urls),
 ]

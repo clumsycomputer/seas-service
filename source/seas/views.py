@@ -1,14 +1,21 @@
 from django.contrib.auth.models import User
-from rest_framework import viewsets
-from rest_framework import permissions
+from drf_writable_nested import serializers
+from rest_framework import viewsets, views
+from rest_framework.response import Response
 from source.seas.models import ContentList
-from source.seas.serializers import ContentListSerializer, UserSerializer
+from source.seas.serializers import ContentListSerializer, CurrentUserSerializer, UserProfileSerializer
 from source.seas.permissions import IsOwnerOrReadOnly
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class CurrentUserView(views.APIView):
+    def get(self, request):
+        serializer = CurrentUserSerializer(request.user)
+        return Response(serializer.data)
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserProfileSerializer
     permission_classes = [IsOwnerOrReadOnly]
 
 

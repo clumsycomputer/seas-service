@@ -5,24 +5,30 @@ from source.seas.models import ContentList, ContentItem, ContentLink
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 
-class UserContentListSerializer(serializers.HyperlinkedModelSerializer):
+class UserProfileContentListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ContentList
         fields = ['id', 'contentListTitle', 'contentListRating']
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    contentLists = UserContentListSerializer(many=True, read_only=True)
+class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+    contentLists = UserProfileContentListSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'contentLists']
+        fields = ['id', 'username', 'contentLists']
+
+
+class CurrentUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email']
 
 
 class ContentListAuthorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username']
 
 
 class ContentLinkSerializer(serializers.HyperlinkedModelSerializer):
