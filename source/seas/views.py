@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from drf_writable_nested import serializers
 from rest_framework import viewsets, views
 from rest_framework.response import Response
 from source.seas.models import ContentList
