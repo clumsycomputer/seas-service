@@ -6,18 +6,18 @@ from rest_auth.serializers import TokenSerializer
 from rest_auth.models import TokenModel
 
 
-class UserProfileContentListSerializer(serializers.HyperlinkedModelSerializer):
+class UserProfileContentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContentList
-        fields = ["id", "contentListTitle", "contentListRating"]
+        fields = ["id", "content_list_title", "content_list_rating"]
 
 
-class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
-    contentLists = UserProfileContentListSerializer(many=True, read_only=True)
+class UserProfileSerializer(serializers.ModelSerializer):
+    content_lists = UserProfileContentListSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        fields = ["id", "username", "contentLists"]
+        fields = ["id", "username", "content_lists"]
 
 
 class CurrentUserTokenSerializer(TokenSerializer):
@@ -27,43 +27,43 @@ class CurrentUserTokenSerializer(TokenSerializer):
 
 
 class CurrentUserSerializer(serializers.ModelSerializer):
-    authToken = serializers.ReadOnlyField()
+    api_token = serializers.ReadOnlyField()
 
     class Meta:
         model = User
-        fields = ["id", "username", "email", "authToken"]
+        fields = ["id", "username", "email", "api_token"]
 
 
-class ContentListAuthorSerializer(serializers.HyperlinkedModelSerializer):
+class ContentListAuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "username"]
 
 
-class ContentLinkSerializer(serializers.HyperlinkedModelSerializer):
+class ContentLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContentLink
-        fields = ["contentLinkHostName", "contentLinkUrl"]
+        fields = ["content_link_host_name", "content_link_url"]
 
 
 class ContentItemsSerializer(WritableNestedModelSerializer):
-    contentItemLinks = ContentLinkSerializer(many=True, default=[])
+    content_item_links = ContentLinkSerializer(many=True, default=[])
 
     class Meta:
         model = ContentItem
-        fields = ["contentItemTitle", "contentItemAuthor", "contentItemLinks"]
+        fields = ["content_item_title", "content_item_author", "content_item_links"]
 
 
 class ContentListSerializer(WritableNestedModelSerializer):
-    contentListAuthor = ContentListAuthorSerializer(read_only=True)
-    contentListItems = ContentItemsSerializer(many=True, default=[])
+    content_list_author = ContentListAuthorSerializer(read_only=True)
+    content_list_items = ContentItemsSerializer(many=True, default=[])
 
     class Meta:
         model = ContentList
         fields = [
             "id",
-            "contentListAuthor",
-            "contentListTitle",
-            "contentListRating",
-            "contentListItems",
+            "content_list_author",
+            "content_list_title",
+            "content_list_rating",
+            "content_list_items",
         ]

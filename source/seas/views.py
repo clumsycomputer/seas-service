@@ -14,7 +14,7 @@ class CurrentUserView(LoginView):
     def get_response(self):
         original_response = super().get_response()
         current_user = User.objects.get(id=original_response.data["user"])
-        current_user.authToken = original_response.data["key"]
+        current_user.api_token = original_response.data["key"]
         current_user_serializer = CurrentUserSerializer(current_user)
         original_response.data = current_user_serializer.data
         return original_response
