@@ -123,6 +123,7 @@ REST_FRAMEWORK = {
         "djangorestframework_camel_case.parser.CamelCaseMultiPartParser",
         "djangorestframework_camel_case.parser.CamelCaseJSONParser",
     ),
+    "EXCEPTION_HANDLER": "source.seas.exceptions.validation_exception_handler",
 }
 
 # Internationalization
