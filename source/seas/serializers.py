@@ -1,23 +1,27 @@
+from email.policy import default
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from source.seas.models import ContentList, ContentItem, ContentLink
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_auth.serializers import TokenSerializer
 from rest_auth.models import TokenModel
+from django.forms import ValidationError
 
 
 class UserProfileContentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContentList
-        fields = ["id", "content_list_title", "content_list_rating"]
+        fields = ["content_list_title", "content_list_rating"]
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    content_lists = UserProfileContentListSerializer(many=True, read_only=True)
+    content_lists = UserProfileContentListSerializer(
+        many=True, read_only=True, default=[]
+    )
 
     class Meta:
         model = User
-        fields = ["id", "username", "content_lists"]
+        fields = ["username", "content_lists"]
 
 
 class CurrentUserTokenSerializer(TokenSerializer):
@@ -31,13 +35,13 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "username", "email", "api_token"]
+        fields = ["username", "email", "api_token"]
 
 
 class ContentListAuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username"]
+        fields = ["username"]
 
 
 class ContentLinkSerializer(serializers.ModelSerializer):
@@ -61,9 +65,21 @@ class ContentListSerializer(WritableNestedModelSerializer):
     class Meta:
         model = ContentList
         fields = [
-            "id",
             "content_list_author",
             "content_list_title",
             "content_list_rating",
             "content_list_items",
         ]
+
+    def validate_content_list_title(self, value):
+        content_list_title_exist = (
+            ContentList.objects.all()
+            .filter(
+                content_list_author=self.context["request"].user,
+                content_list_title=value,
+            )
+            .exists()
+        )
+        if content_list_title_exist:
+            raise ValidationError("title already exists")
+        return value

@@ -32,3 +32,5 @@ class ContentListViewSet(viewsets.ModelViewSet):
     queryset = ContentList.objects.all()
     serializer_class = ContentListSerializer
     permission_classes = [IsOwnerOrReadOnly]
+    lookup_field = "content_list_title"
+    lookup_url_kwarg = "content_list_title"
