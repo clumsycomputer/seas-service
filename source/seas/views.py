@@ -24,6 +24,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = [IsOwnerOrReadOnly]
+    lookup_field = "username"
+    lookup_url_kwarg = "username"
 
 
 class ContentListViewSet(viewsets.ModelViewSet):
