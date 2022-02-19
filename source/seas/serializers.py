@@ -11,7 +11,12 @@ from django.forms import ValidationError
 class UserProfileContentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContentList
-        fields = ["content_list_title", "content_list_rating"]
+        fields = [
+            "id",
+            "content_list_slug",
+            "content_list_title",
+            "content_list_rating",
+        ]
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -59,27 +64,30 @@ class ContentItemsSerializer(WritableNestedModelSerializer):
 
 
 class ContentListSerializer(WritableNestedModelSerializer):
+    id = serializers.ReadOnlyField()
     content_list_author = ContentListAuthorSerializer(read_only=True)
     content_list_items = ContentItemsSerializer(many=True, default=[])
 
     class Meta:
         model = ContentList
         fields = [
+            "id",
+            "content_list_slug",
             "content_list_author",
             "content_list_title",
             "content_list_rating",
             "content_list_items",
         ]
 
-    def validate_content_list_title(self, value):
-        content_list_title_exist = (
-            ContentList.objects.all()
-            .filter(
-                content_list_author=self.context["request"].user,
-                content_list_title=value,
-            )
-            .exists()
-        )
-        if content_list_title_exist:
-            raise ValidationError("title already exists")
-        return value
+    # def validate_content_list_title(self, value):
+    #     content_list_title_exist = (
+    #         ContentList.objects.all()
+    #         .filter(
+    #             content_list_author=self.context["request"].user,
+    #             content_list_title=value,
+    #         )
+    #         .exists()
+    #     )
+    #     if content_list_title_exist:
+    #         raise ValidationError("title already exists")
+    #     return value

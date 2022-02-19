@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
+from source.seas.RandomPrimaryModel import RandomPrimaryIdModel
+from autoslug import AutoSlugField
 
 
-class ContentList(models.Model):
+class ContentList(RandomPrimaryIdModel):
     content_list_author = models.ForeignKey(
         User, default=1, on_delete=models.CASCADE, related_name="content_lists"
     )
@@ -14,6 +16,11 @@ class ContentList(models.Model):
         ),
         default="SAFE_FOR_WORK",
         max_length=50,
+    )
+    content_list_slug = AutoSlugField(
+        populate_from="content_list_title",
+        unique_with=["content_list_title"],
+        always_update=True,
     )
 
 
