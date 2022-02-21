@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from source.seas.models import ContentList
 from source.seas.serializers import (
     ContentListSerializer,
@@ -10,7 +10,7 @@ from source.seas.permissions import IsOwnerOrReadOnly
 from rest_auth.views import LoginView
 
 
-class CurrentUserView(LoginView):
+class CurrentUserLoginView(LoginView):
     def get_response(self):
         original_response = super().get_response()
         current_user = User.objects.get(id=original_response.data["user"])
@@ -20,7 +20,7 @@ class CurrentUserView(LoginView):
         return original_response
 
 
-class UserProfileViewSet(viewsets.ModelViewSet):
+class UserProfileViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = [IsOwnerOrReadOnly]
@@ -28,9 +28,12 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     lookup_url_kwarg = "username"
 
 
-class ContentListViewSet(viewsets.ModelViewSet):
+class ContentListViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
     queryset = ContentList.objects.all()
     serializer_class = ContentListSerializer
     permission_classes = [IsOwnerOrReadOnly]
-    # lookup_field = "content_list_title"
-    # lookup_url_kwarg = "content_list_title"

@@ -78,16 +78,3 @@ class ContentListSerializer(WritableNestedModelSerializer):
             "content_list_rating",
             "content_list_items",
         ]
-
-    # def validate_content_list_title(self, value):
-    #     content_list_title_exist = (
-    #         ContentList.objects.all()
-    #         .filter(
-    #             content_list_author=self.context["request"].user,
-    #             content_list_title=value,
-    #         )
-    #         .exists()
-    #     )
-    #     if content_list_title_exist:
-    #         raise ValidationError("title already exists")
-    #     return value
